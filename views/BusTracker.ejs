@@ -1,0 +1,55 @@
+<html>
+
+<head>
+    <title>Bus tracker</title>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="./scripts/map.js"></script>
+    <style>
+        #map {
+            height: 100%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Live Bus Tracker</h1>
+    <p>Hello "<%= name %>" </p>
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFZ2FjgtItESFsLMsvmEDSCVJm_KfXOqE&callback=initMap&v=weekly"
+        async></script>
+
+</body>
+<script>
+    let map;
+
+    function initMap() {
+        const myLatLng = { lat: -33.91722, lng: 151.23064 };
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: new google.maps.LatLng(-33.91722, 151.23064),
+            zoom: 16,
+        });
+
+        new google.maps.Marker({
+            position: myLatLng,
+            map,
+            title: "Hello !",
+        });
+
+
+
+    }
+</script>
+
+</html>
