@@ -23,7 +23,6 @@
 
 <body>
     <h1>Live Bus Tracker</h1>
-    <p>Hello "<%= name %>" </p>
     <div id="map"></div>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
@@ -34,19 +33,44 @@
 </body>
 <script>
     let map;
-
+    let buses = '<%- JSON.stringify(buses) %>';
     function initMap() {
-        const myLatLng = { lat: -33.91722, lng: 151.23064 };
+        const bus = JSON.parse(buses);
+        let lat = bus[0].busLocation.lat;
+        let lng = bus[0].busLocation.lng;
+        let stops = bus[0].route;
+
+        const myLatLng = { lat: parseFloat(lat), lng: parseFloat(lng) };
         map = new google.maps.Map(document.getElementById("map"), {
-            center: new google.maps.LatLng(-33.91722, 151.23064),
+            center: new google.maps.LatLng(lat, lng),
             zoom: 16,
         });
 
         new google.maps.Marker({
             position: myLatLng,
             map,
-            title: "Hello !",
+            title: bus[0].busNo,
         });
+        for (const stop in stops) {
+            let route = bus[0].route[stop];
+            let lat = parseFloat(route.lat);
+            let lng = parseFloat(route.lng);
+            center = {lat, lng};
+            const cityCircle = new google.maps.Circle({
+                strokeColor: "#FF0000",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#FF0000",
+                fillOpacity: 0.35,
+                map,
+                center: center,
+                radius: 10,
+            });
+
+        }
+
+
+
 
 
 

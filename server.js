@@ -9,7 +9,7 @@ let url = "mongodb+srv://dan:test123@cluster0.llc3m.mongodb.net/database?retryWr
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true });
 let moduleSchema = new mongoose.Schema({ title: String, code: String });
 // Define a Model.
-let Module = mongoose.model("people", moduleSchema);
+let Module = mongoose.model("bus", moduleSchema);
 
 
 app.set("views", path.join(__dirname, "views"));
@@ -32,8 +32,17 @@ app.get('/', (req, res) => {
 
 
 app.get('/busTracker', function (req, res, next) {
-    let name = {"name": "Dan"};
-    res.render('BusTracker', name);
+  Module.find({}, (err, found) => {
+    if (!err) {
+      let buses = found;
+      res.render('BusTracker', {buses});
+    }
+    else{
+    console.log(found);
+    console.log(err);
+    res.send("Some error occured!")
+    }
+})
 });
 
 app.listen(9000, function (){
