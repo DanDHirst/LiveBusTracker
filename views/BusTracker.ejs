@@ -4,7 +4,6 @@
     <title>Bus tracker</title>
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script src="./scripts/map.js"></script>
     <style>
         #map {
             height: 50%;
@@ -32,6 +31,7 @@
 
 </body>
 <script>
+
     let map;
     let buses = '<%- JSON.stringify(buses) %>';
     function initMap() {
@@ -46,16 +46,18 @@
             zoom: 16,
         });
 
+        calculateAndDisplayRoute(map, stops);
+
         new google.maps.Marker({
             position: myLatLng,
             map,
-            title: bus[0].busNo,
+            title: "1",
         });
         for (const stop in stops) {
             let route = bus[0].route[stop];
             let lat = parseFloat(route.lat);
             let lng = parseFloat(route.lng);
-            center = {lat, lng};
+            center = { lat, lng };
             const cityCircle = new google.maps.Circle({
                 strokeColor: "#FF0000",
                 strokeOpacity: 0.8,
@@ -68,12 +70,56 @@
             });
 
         }
+    }
+    function calculateAndDisplayRoute(map, stops) {
+
+        const directionsService = new google.maps.DirectionsService();
+        const directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
+
+        const checkboxArray = stops;
+        const waypts = [];
 
 
+        for (let i = 1; i < checkboxArray.length -1 ; i++) {
+            waypts.push({
+                location: new google.maps.LatLng(parseFloat(checkboxArray[i].lat), parseFloat(checkboxArray[i].lng)),
+                stopover: true,
+            });
+        }
 
+        originLatLng = new google.maps.LatLng(parseFloat(stops[0].lat), parseFloat(stops[0].lng));
+        destLatLng = new google.maps.LatLng(parseFloat(stops[checkboxArray.length-1].lat), parseFloat(stops[checkboxArray.length-1].lng));
+        directionsService
+            .route({
+                origin: originLatLng,
+                destination: destLatLng,
+                waypoints: waypts,
+                optimizeWaypoints: true,
+                travelMode: google.maps.TravelMode.DRIVING,
+                
 
+            })
+            .then((response) => {
+                    directionsRenderer.setDirections(response);
 
+                    const route = response.routes[0];
+                    //const summaryPanel = document.getElementById("directions-panel");
 
+                    //summaryPanel.innerHTML = "";
+
+                    /*/ For each route, display summary information.
+                    for (let i = 0; i < route.legs.length; i++) {
+                        const routeSegment = i + 1;
+    
+                        summaryPanel.innerHTML +=
+                            "<b>Route Segment: " + routeSegment + "</b><br>";
+                        summaryPanel.innerHTML += route.legs[i].start_address + " to ";
+                        summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
+                        summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
+                    } */
+                })
+        .catch((e) => window.alert("Directions request failed due to " + status));
     }
 </script>
 
