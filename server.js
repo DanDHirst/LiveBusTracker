@@ -7,44 +7,107 @@ let http = require("http");
 // Connect to MongoDB.
 let url = "mongodb+srv://dan:test123@cluster0.llc3m.mongodb.net/database?retryWrites=true&w=majority"
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true });
-let moduleSchema = new mongoose.Schema({ title: String, code: String });
+let busSchema = new mongoose.Schema({ 
+  busNo: String, 
+  busLocation: {
+    lat: String,
+    lng: String,
+    nextStop: String
+  },
+  route:[{
+    locName: String,
+    lat: String,
+    lng: String
+  }]
+});
 // Define a Model.
-let Module = mongoose.model("bus", moduleSchema);
+let BusModel = mongoose.model("bus", busSchema);
 
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 app.get('/', (req, res) => {
-  Module.find({}, (err, found) => {
-      if (!err) {
-          res.send(found);
-      }
-      else{
+  BusModel.find({}, (err, found) => {
+    if (!err) {
+      res.send(found);
+    }
+    else {
       console.log(found);
       console.log(err);
       res.send("Some error occured!")
-      }
+    }
   })
 });
 
+app.get('/busSim', function (req, res, next) {
+  BusModel.find({}, (err, found) => {
+    if (!err) {
+      let buses = found;
+      res.render('BusSim', { buses });
+    }
+    else {
+      console.log(found);
+      console.log(err);
+      res.send("Some error occured!")
+    }
+  })
+});
+
+app.post('/busSim', function (req, res) {
+  const busID = req.body.busID;
+  const busLocationNextStop = req.body.nextStop;
+  const busLocationLat = req.body.Lat;
+  const busLocationLng = req.body.Lng;
+
+  BusModel.findOne({ _id: "61c08e3aa44fe701c353006f" }, function (err, busDoc) {
+    console.log(err);
+    if (err) {
+      console.log(err);
+    }
+    if (!busDoc) {
+      console.log("no doc");
+      console.log(busDoc);
+    }
+    else {
+      busDoc.busLocation.lat = busLocationLat;
+      busDoc.busLocation.lng = busLocationLng;
+      busDoc.busLocation.nextStop = busLocationNextStop;
+
+      busDoc.save(function (err) {
+        if (err) {
+          console.log(err);
+        }
+        console.log("saved");
+      });
+    }
+  })
+
+  res.send({
+    'user_id': busID,
+    'token': busLocationNextStop,
+    'geo': busLocationLat
+  });
+});
 
 
 app.get('/busTracker', function (req, res, next) {
-  Module.find({}, (err, found) => {
+  BusModel.find({}, (err, found) => {
     if (!err) {
       let buses = found;
-      res.render('BusTracker', {buses});
+      res.render('BusTracker', { buses });
     }
-    else{
-    console.log(found);
-    console.log(err);
-    res.send("Some error occured!")
+    else {
+      console.log(found);
+      console.log(err);
+      res.send("Some error occured!")
     }
-})
+  })
 });
 
-app.listen(9000, function (){
+app.listen(9000, function () {
   console.log("Listening on 9000")
 });

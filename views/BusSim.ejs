@@ -1,0 +1,70 @@
+<html>
+
+<head>
+    <title>Bus tracker</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>Live Bus Tracker</h1>
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <form action="/busSim" method="POST">
+        <input value="<%= buses[0].id %>" name="id" >
+        <input value="Western Approach Flats" name="nextStop" id="nextStop">
+        <input value=50.373153 name="Lat" id="Lat">
+        <input value=-4.146372 name="Lng" id="Lng">
+        <button>Submit</button>
+
+    </form>
+
+    <button onclick="changeBusLocation('Pilgrims Mews')">Pilgrims Mews</button>
+    <button onclick="changeBusLocation('Railway Station')">Railway Station</button>
+    <button onclick="changeBusLocation('Western Approach Flats')">Western Approach Flats</button>
+    <button onclick="changeBusLocation('Western Approach (Stop 2)')">Western Approach (Stop 2)</button>
+    <button onclick="changeBusLocation('Royal Parade (Stop A11)')">Royal Parade (Stop A11)</button>
+
+</body>
+<script>
+    function changeBusLocation(name) {
+        let stop;
+        let lat;
+        let lng;
+
+        switch (name) {
+            case "Pilgrims Mews":
+                stop = "Pilgrims Mews";
+                lat = "50.378278";
+                lng = "-4.148529";
+                break;
+            case "Railway Station":
+                stop = "Railway Station";
+                lat = "50.376983";
+                lng = "-4.144634";
+                break;
+            case "Western Approach Flats":
+                stop = "Western Approach Flats";
+                lat = "50.373153";
+                lng = "-4.146372";
+                break;
+            case "Western Approach (Stop 2)":
+                stop = "Western Approach (Stop 2)";
+                lat = "50.371069";
+                lng = "-4.148383";
+                break;
+            case "Royal Parade (Stop A11)":
+                stop = "Royal Parade (Stop A11)";
+                lat = "50.370361";
+                lng = "-4.143965";
+                break;
+            default:
+            // code block
+        }
+
+
+        $("#nextStop").val(stop);
+        $("#Lat").val(lat);
+        $("#Lng").val(lng);
+    }
+</script>
