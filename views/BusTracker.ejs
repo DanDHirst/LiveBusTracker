@@ -1,13 +1,18 @@
 <html>
 
 <head>
+    <%- include('../template/layout/header') %>
     <title>Bus tracker</title>
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <style>
         #map {
-            height: 50%;
-            width: 50%;
+            height: 60%;
+            width: 60%;
+            text-align: center;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         /* Optional: Makes the sample page fill the window. */
@@ -16,18 +21,21 @@
             height: 100%;
             margin: 0;
             padding: 0;
+            text-align: center;
         }
     </style>
 </head>
 
 <body>
-        <%- include('../template/layout/header') %>
+
     <div id="map"></div>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFZ2FjgtItESFsLMsvmEDSCVJm_KfXOqE&callback=initMap&v=weekly"
         async></script>
+
+    asda
 
 </body>
 <script>
@@ -81,7 +89,7 @@
         const waypts = [];
 
 
-        for (let i = 1; i < checkboxArray.length -1 ; i++) {
+        for (let i = 1; i < checkboxArray.length - 1; i++) {
             waypts.push({
                 location: new google.maps.LatLng(parseFloat(checkboxArray[i].lat), parseFloat(checkboxArray[i].lng)),
                 stopover: true,
@@ -89,7 +97,7 @@
         }
 
         originLatLng = new google.maps.LatLng(parseFloat(stops[0].lat), parseFloat(stops[0].lng));
-        destLatLng = new google.maps.LatLng(parseFloat(stops[checkboxArray.length-1].lat), parseFloat(stops[checkboxArray.length-1].lng));
+        destLatLng = new google.maps.LatLng(parseFloat(stops[checkboxArray.length - 1].lat), parseFloat(stops[checkboxArray.length - 1].lng));
         directionsService
             .route({
                 origin: originLatLng,
@@ -97,29 +105,29 @@
                 waypoints: waypts,
                 optimizeWaypoints: true,
                 travelMode: google.maps.TravelMode.DRIVING,
-                
+
 
             })
             .then((response) => {
-                    directionsRenderer.setDirections(response);
+                directionsRenderer.setDirections(response);
 
-                    const route = response.routes[0];
-                    //const summaryPanel = document.getElementById("directions-panel");
+                const route = response.routes[0];
+                //const summaryPanel = document.getElementById("directions-panel");
 
-                    //summaryPanel.innerHTML = "";
+                //summaryPanel.innerHTML = "";
 
-                    /*/ For each route, display summary information.
-                    for (let i = 0; i < route.legs.length; i++) {
-                        const routeSegment = i + 1;
-    
-                        summaryPanel.innerHTML +=
-                            "<b>Route Segment: " + routeSegment + "</b><br>";
-                        summaryPanel.innerHTML += route.legs[i].start_address + " to ";
-                        summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
-                        summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
-                    } */
-                })
-        .catch((e) => window.alert("Directions request failed due to " + status));
+                /*/ For each route, display summary information.
+                for (let i = 0; i < route.legs.length; i++) {
+                    const routeSegment = i + 1;
+ 
+                    summaryPanel.innerHTML +=
+                        "<b>Route Segment: " + routeSegment + "</b><br>";
+                    summaryPanel.innerHTML += route.legs[i].start_address + " to ";
+                    summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
+                    summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
+                } */
+            })
+            .catch((e) => window.alert("Directions request failed due to " + status));
     }
 </script>
 
