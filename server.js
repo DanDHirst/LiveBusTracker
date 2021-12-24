@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-app.get('/', (req, res) => {
+app.get('/buses', (req, res) => {
   BusModel.find({}, (err, found) => {
     if (!err) {
       res.send(found);
@@ -85,16 +85,10 @@ app.post('/busSim', function (req, res) {
       });
     }
   })
-
-  res.send({
-    'user_id': busID,
-    'token': busLocationNextStop,
-    'geo': busLocationLat
-  });
 });
 
 
-app.get('/busTracker', function (req, res, next) {
+app.get('/', function (req, res, next) {
   BusModel.find({}, (err, found) => {
     if (!err) {
       let buses = found;
@@ -107,6 +101,78 @@ app.get('/busTracker', function (req, res, next) {
     }
   })
 });
+
+app.get('/addbus', function (req, res, next) {
+  BusModel.find({}, (err, found) => {
+    if (!err) {
+      let buses = found;
+      res.render('addbus', { buses });
+    }
+    else {
+      console.log(found);
+      console.log(err);
+      res.send("Some error occured!")
+    }
+  })
+});
+
+app.post('/addbus', function (req, res) {
+  var ObjectId = require('mongodb').ObjectId;
+  const busID = req.body.busID;
+  const busLocationNextStop = req.body.nextStop;
+  const busLocationLat = req.body.Lat;
+  const busLocationLng = req.body.Lng;
+
+
+  let bus = {
+    busLocation: {
+      lat: busLocationLat,
+      lng: busLocationLng,
+      nextStop: busLocationNextStop
+    },
+    _id: new ObjectId(),
+    busNo: busID,
+    route:[]
+  }
+  BusModel.insertMany(bus);
+});
+
+app.get('/updateroutes', function (req, res, next) {
+  BusModel.find({}, (err, found) => {
+    if (!err) {
+      let buses = found;
+      res.render('UpdateRoutes', { buses });
+    }
+    else {
+      console.log(found);
+      console.log(err);
+      res.send("Some error occured!")
+    }
+  })
+});
+
+app.post('/updateroutes', function (req, res) {
+  var ObjectId = require('mongodb').ObjectId;
+  const busID = req.body.busID;
+  const busLocationNextStop = req.body.nextStop;
+  const busLocationLat = req.body.Lat;
+  const busLocationLng = req.body.Lng;
+
+
+  let bus = {
+    busLocation: {
+      lat: busLocationLat,
+      lng: busLocationLng,
+      nextStop: busLocationNextStop
+    },
+    _id: new ObjectId(),
+    busNo: busID,
+    route:[]
+  }
+  //BusModel.insertMany(bus);
+});
+
+
 
 app.listen(9000, function () {
   console.log("Listening on 9000")

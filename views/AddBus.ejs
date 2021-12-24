@@ -1,0 +1,14 @@
+<head>
+    <title>Add Bus</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <%- include('../template/layout/header') %>
+</head>
+<body>
+    <form action="/AddBus" method="POST">
+        <input value="Western Approach Flats" name="nextStop" id="nextStop">
+        <input value=50.373153 name="Lat" id="Lat">
+        <input value=-4.146372 name="Lng" id="Lng">
+        <input value=2 name="busID" id="busID">
+        <button>Submit</button>
+    </form>
+</body>
