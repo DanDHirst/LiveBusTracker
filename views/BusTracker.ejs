@@ -59,7 +59,8 @@
         new google.maps.Marker({
             position: myLatLng,
             map,
-            title: "1",
+            title: String(bus[0].busNo),
+            icon: 'https://img.icons8.com/ios-filled/50/000000/bus.png'
         });
         for (const stop in stops) {
             let route = bus[0].route[stop];

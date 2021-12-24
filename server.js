@@ -85,6 +85,7 @@ app.post('/busSim', function (req, res) {
       });
     }
   })
+  res.redirect("/bussim");
 });
 
 
