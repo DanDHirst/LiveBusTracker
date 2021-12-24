@@ -63,7 +63,7 @@ app.post('/busSim', function (req, res) {
   const busLocationLat = req.body.Lat;
   const busLocationLng = req.body.Lng;
 
-  BusModel.findOne({ _id: "61c08e3aa44fe701c353006f" }, function (err, busDoc) {
+  BusModel.findOne({ _id: busID }, function (err, busDoc) {
     console.log(err);
     if (err) {
       console.log(err);
@@ -84,8 +84,9 @@ app.post('/busSim', function (req, res) {
         console.log("saved");
       });
     }
+    res.redirect("/bussim");
   })
-  res.redirect("/bussim");
+  
 });
 
 
@@ -153,24 +154,39 @@ app.get('/updateroutes', function (req, res, next) {
 });
 
 app.post('/updateroutes', function (req, res) {
-  var ObjectId = require('mongodb').ObjectId;
   const busID = req.body.busID;
-  const busLocationNextStop = req.body.nextStop;
-  const busLocationLat = req.body.Lat;
-  const busLocationLng = req.body.Lng;
+  const busLocation = req.body.nextStop;
+  const routeLocationLat = req.body.Lat;
+  const routeLocationLng = req.body.Lng;
 
 
-  let bus = {
-    busLocation: {
-      lat: busLocationLat,
-      lng: busLocationLng,
-      nextStop: busLocationNextStop
-    },
-    _id: new ObjectId(),
-    busNo: busID,
-    route:[]
+  let route = {
+    locName: busLocation,
+    lat: routeLocationLat,
+    lng: routeLocationLng
   }
-  //BusModel.insertMany(bus);
+  BusModel.findOne({ _id: busID }, function (err, busDoc) {
+    console.log(err);
+    if (err) {
+      console.log(err);
+    }
+    if (!busDoc) {
+      console.log("no doc");
+      console.log(busDoc);
+    }
+    else {
+      busDoc.route.push(route);
+
+      busDoc.save(function (err) {
+        if (err) {
+          console.log(err);
+        }
+        console.log("saved");
+      });
+    }
+    res.redirect("/updateroutes");
+  })
+
 });
 
 

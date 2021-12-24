@@ -10,7 +10,7 @@
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <form action="/busSim" method="POST">
-        <input value="<%= buses[0].id %>" name="id" >
+        <input value="<%= buses[0].id %>" name="busID" >
         <input value="<%= buses[0].busLocation.nextStop %>" name="nextStop" id="nextStop">
         <input value="<%= buses[0].busLocation.lat %>" name="Lat" id="Lat">
         <input value="<%= buses[0].busLocation.lng %>" name="Lng" id="Lng">
