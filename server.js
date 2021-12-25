@@ -7,14 +7,14 @@ let http = require("http");
 // Connect to MongoDB.
 let url = "mongodb+srv://dan:test123@cluster0.llc3m.mongodb.net/database?retryWrites=true&w=majority"
 mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true });
-let busSchema = new mongoose.Schema({ 
-  busNo: String, 
+let busSchema = new mongoose.Schema({
+  busNo: String,
   busLocation: {
     lat: String,
     lng: String,
     nextStop: String
   },
-  route:[{
+  route: [{
     locName: String,
     lat: String,
     lng: String
@@ -86,7 +86,7 @@ app.post('/busSim', function (req, res) {
     }
     res.redirect("/bussim");
   })
-  
+
 });
 
 
@@ -104,11 +104,11 @@ app.get('/', function (req, res, next) {
   })
 });
 
-app.get('/addbus', function (req, res, next) {
+app.get('/BusManagement', function (req, res, next) {
   BusModel.find({}, (err, found) => {
     if (!err) {
       let buses = found;
-      res.render('addbus', { buses });
+      res.render('BusManagement', { buses });
     }
     else {
       console.log(found);
@@ -118,25 +118,44 @@ app.get('/addbus', function (req, res, next) {
   })
 });
 
-app.post('/addbus', function (req, res) {
+app.post('/BusManagement', function (req, res) {
+  //delete or insert
+  if (req.body.delete == "true") {
+    const busID = req.body.busID;
+    BusModel.deleteOne({ _id: busID }, function (err) {
+      if (err) console.log(err);
+      console.log("Successful deletion");
+    });
+  }
+  else {
+    var ObjectId = require('mongodb').ObjectId;
+    const busID = req.body.busID;
+    const busLocationNextStop = req.body.nextStop;
+    const busLocationLat = req.body.Lat;
+    const busLocationLng = req.body.Lng;
+
+
+    let bus = {
+      busLocation: {
+        lat: busLocationLat,
+        lng: busLocationLng,
+        nextStop: busLocationNextStop
+      },
+      _id: new ObjectId(),
+      busNo: busID,
+      route: []
+    }
+    BusModel.insertMany(bus);
+  }
+  res.redirect("/BusManagement");
+});
+app.delete('/BusManagement', function (req, res) {
   var ObjectId = require('mongodb').ObjectId;
   const busID = req.body.busID;
   const busLocationNextStop = req.body.nextStop;
   const busLocationLat = req.body.Lat;
   const busLocationLng = req.body.Lng;
 
-
-  let bus = {
-    busLocation: {
-      lat: busLocationLat,
-      lng: busLocationLng,
-      nextStop: busLocationNextStop
-    },
-    _id: new ObjectId(),
-    busNo: busID,
-    route:[]
-  }
-  BusModel.insertMany(bus);
 });
 
 app.get('/updateroutes', function (req, res, next) {

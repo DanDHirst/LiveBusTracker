@@ -1,0 +1,42 @@
+<head>
+    <title>Add Bus</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <%- include('../template/layout/header') %>
+</head>
+
+<body>
+    <form action="/BusManagement" method="POST">
+        <input value="Western Approach Flats" name="nextStop" id="nextStop">
+        <input value=50.373153 name="Lat" id="Lat">
+        <input value=-4.146372 name="Lng" id="Lng">
+        <input value=2 name="busID" id="busID">
+        <button>Submit</button>
+    </form>
+    <table class="table table-dark">
+        <th>ID</th>
+        <th>Bus No</th>
+        <th>NextStop</th>
+        <th>Current Lat</th>
+        <th>Current Lng</th>
+        <th> </th>
+
+        <% for(var i=0; i < buses.length; i++) { %>
+        <tr>
+            <td><%= buses[i].id %></td>
+            <td><%= buses[i].busNo %></td>
+            <td><%= buses[i].busLocation.nextStop %></td>
+            <td><%= buses[i].busLocation.lat %></td>
+            <td><%= buses[i].busLocation.lng %></td>
+            <td>
+                <form action="/BusManagement" method="POST">
+                    <input hidden name="delete" value="true">
+                    <button value="<%= buses[i].id %>" name="busID">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    </button>
+                </form>
+            </td>
+
+        </tr>
+        <% } %>
+    </table>
+</body>
