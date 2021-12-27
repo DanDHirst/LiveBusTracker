@@ -30,10 +30,12 @@
             <td>
                 <form action="/BusManagement" method="POST">
                     <input hidden name="delete" value="true">
-                    <button value="<%= buses[i].id %>" name="busID">
+                    
+                    <button value="<%= buses[i].id %>" name="busID" type="button" class="btn btn-danger">
                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                     </button>
                 </form>
+                <button onclick="window.location.href='/updateroutes/<%=i%>'" type="button" class="btn btn-primary">Manage Routes</button>
             </td>
 
         </tr>

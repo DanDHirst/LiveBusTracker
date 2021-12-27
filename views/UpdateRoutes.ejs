@@ -8,7 +8,36 @@
         <input value="Western Approach Flats" name="nextStop" id="nextStop">
         <input value=50.373153 name="Lat" id="Lat">
         <input value=-4.146372 name="Lng" id="Lng">
-        <input value=2 name="busID" id="busID">
+        <input hidden value="<%= buses[busNo].id %>"" name="busID" id="busID">
+        <input value="<%=[busNo]%>" name="busNum">
         <button>Submit</button>
     </form>
+
+
+<table class="table table-dark">
+    <th>Stop Name</th>
+    <th>Lat</th>
+    <th>Lng</th>
+    
+    <th> </th>
+
+    <% for(var i=0; i < buses[busNo].route.length; i++) { %>
+    <tr>
+        <td><%= buses[busNo].route[i].locName %></td>
+        <td><%= buses[busNo].route[i].lat %></td>
+        <td><%= buses[busNo].route[i].lng %></td>
+        <td>
+            <form action="/UpdateRoutes" method="POST">
+                <input hidden value="<%=[busNo]%>" name="busNum">
+                <input hidden name="delete" value="true">
+                <input hidden name="routeID" value="<%= buses[busNo].route[i].id %>">
+                <button value="<%= buses[busNo].id %>" name="busID">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </button>
+            </form>
+        </td>
+
+    </tr>
+    <% } %>
+</table>
 </body>

@@ -149,20 +149,14 @@ app.post('/BusManagement', function (req, res) {
   }
   res.redirect("/BusManagement");
 });
-app.delete('/BusManagement', function (req, res) {
-  var ObjectId = require('mongodb').ObjectId;
-  const busID = req.body.busID;
-  const busLocationNextStop = req.body.nextStop;
-  const busLocationLat = req.body.Lat;
-  const busLocationLng = req.body.Lng;
 
-});
 
-app.get('/updateroutes', function (req, res, next) {
+app.get('/updateroutes/*', function (req, res, next) {
+  var url = req.params[0];
   BusModel.find({}, (err, found) => {
     if (!err) {
       let buses = found;
-      res.render('UpdateRoutes', { buses });
+      res.render('UpdateRoutes', { buses, busNo: url});
     }
     else {
       console.log(found);
@@ -173,39 +167,51 @@ app.get('/updateroutes', function (req, res, next) {
 });
 
 app.post('/updateroutes', function (req, res) {
-  const busID = req.body.busID;
-  const busLocation = req.body.nextStop;
-  const routeLocationLat = req.body.Lat;
-  const routeLocationLng = req.body.Lng;
-
-
-  let route = {
-    locName: busLocation,
-    lat: routeLocationLat,
-    lng: routeLocationLng
+  const busNum = req.body.busNum;
+  if (req.body.delete == "true") {
+    const busID = req.body.busID;
+    const routeID = req.body.routeID;
+    BusModel.update({ _id: busID }, { "$pull": { "route": { "_id": routeID } }}, { safe: true, multi:true }, function(err, obj) {
+      if (err) console.log(err);
+      console.log("Successful deletion");
+  });
   }
-  BusModel.findOne({ _id: busID }, function (err, busDoc) {
-    console.log(err);
-    if (err) {
+
+  else {
+    const busID = req.body.busID;
+    const busLocation = req.body.nextStop;
+    const routeLocationLat = req.body.Lat;
+    const routeLocationLng = req.body.Lng;
+
+
+    let route = {
+      locName: busLocation,
+      lat: routeLocationLat,
+      lng: routeLocationLng
+    }
+    BusModel.findOne({ _id: busID }, function (err, busDoc) {
       console.log(err);
-    }
-    if (!busDoc) {
-      console.log("no doc");
-      console.log(busDoc);
-    }
-    else {
-      busDoc.route.push(route);
+      if (err) {
+        console.log(err);
+      }
+      if (!busDoc) {
+        console.log("no doc");
+        console.log(busDoc);
+      }
+      else {
+        busDoc.route.push(route);
 
-      busDoc.save(function (err) {
-        if (err) {
-          console.log(err);
-        }
-        console.log("saved");
-      });
-    }
-    res.redirect("/updateroutes");
-  })
-
+        busDoc.save(function (err) {
+          if (err) {
+            console.log(err);
+          }
+          console.log("saved");
+        });
+      }
+      
+    })
+  }
+  res.redirect("/updateroutes/"+busNum);
 });
 
 
