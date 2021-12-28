@@ -2,6 +2,7 @@
 
 <head>
     <%- include('../template/layout/header') %>
+    <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
     <title>Bus tracker</title>
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
@@ -35,10 +36,22 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFZ2FjgtItESFsLMsvmEDSCVJm_KfXOqE&callback=initMap&v=weekly"
         async></script>
 
-    <button onclick="initMap()" >reload</button>
+    <button onclick="initMap()">reload</button>
 
 </body>
 <script>
+    $(function(){
+        var socket = io("http://localhost:9000");
+        socket.on("server message", function(msg){
+            console.log("rec" + msg);
+            socket.emit("client message ack");
+            console.log("emitted message");
+        });
+
+
+    })
+   
+
 
     let map;
     let buses = '<%- JSON.stringify(buses) %>';
@@ -51,7 +64,7 @@
         const myLatLng = { lat: parseFloat(lat), lng: parseFloat(lng) };
         map = new google.maps.Map(document.getElementById("map"), {
             center: new google.maps.LatLng(lat, lng),
-            
+
         });
 
         calculateAndDisplayRoute(map, stops);

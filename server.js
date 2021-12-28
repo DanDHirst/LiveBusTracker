@@ -2,7 +2,8 @@ var express = require('express');
 let app = express();
 let path = require("path");
 let mongoose = require("mongoose");
-let http = require("http");
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 // Connect to MongoDB.
 let url = "mongodb+srv://dan:test123@cluster0.llc3m.mongodb.net/database?retryWrites=true&w=majority"
@@ -22,6 +23,7 @@ let busSchema = new mongoose.Schema({
 });
 // Define a Model.
 let BusModel = mongoose.model("bus", busSchema);
+let port = 9000;
 
 
 app.set("views", path.join(__dirname, "views"));
@@ -29,6 +31,17 @@ app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//Whenever someone connects this gets executed
+io.on('connection', function (socket) {
+  console.log('A user connected');
+
+  // Send a message to the client.
+  socket.emit("server message", "Hello World");
+  //Whenever someone disconnects this piece of code executed
+  socket.on('Client Message', function (msg) {
+    console.log("Recd from client: " + msg);
+  });
+});
 
 app.get('/buses', (req, res) => {
   BusModel.find({}, (err, found) => {
@@ -156,7 +169,7 @@ app.get('/updateroutes/*', function (req, res, next) {
   BusModel.find({}, (err, found) => {
     if (!err) {
       let buses = found;
-      res.render('UpdateRoutes', { buses, busNo: url});
+      res.render('UpdateRoutes', { buses, busNo: url });
     }
     else {
       console.log(found);
@@ -171,10 +184,10 @@ app.post('/updateroutes', function (req, res) {
   if (req.body.delete == "true") {
     const busID = req.body.busID;
     const routeID = req.body.routeID;
-    BusModel.update({ _id: busID }, { "$pull": { "route": { "_id": routeID } }}, { safe: true, multi:true }, function(err, obj) {
+    BusModel.update({ _id: busID }, { "$pull": { "route": { "_id": routeID } } }, { safe: true, multi: true }, function (err, obj) {
       if (err) console.log(err);
       console.log("Successful deletion");
-  });
+    });
   }
 
   else {
@@ -208,14 +221,13 @@ app.post('/updateroutes', function (req, res) {
           console.log("saved");
         });
       }
-      
+
     })
   }
-  res.redirect("/updateroutes/"+busNum);
+  res.redirect("/updateroutes/" + busNum);
 });
 
 
-
-app.listen(9000, function () {
+http.listen(9000, function () {
   console.log("Listening on 9000")
 });
