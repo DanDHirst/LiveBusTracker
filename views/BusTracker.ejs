@@ -37,21 +37,20 @@
         async></script>
 
     <button onclick="initMap()">reload</button>
+    <button onclick="socketRequest()"> sockets</button>
 
 </body>
 <script>
-    $(function(){
-        var socket = io("http://localhost:9000");
-        socket.on("server message", function(msg){
+    let socket = io("http://localhost:9000");
+    $(function () {
+        setInterval(socketRequest, 30000);
+        socket.on("server message", function (msg) {
             console.log("rec" + msg);
-            socket.emit("client message ack");
             console.log("emitted message");
+            buses = JSON.stringify(msg);
+            initMap();
         });
-
-
     })
-   
-
 
     let map;
     let buses = '<%- JSON.stringify(buses) %>';
@@ -92,6 +91,7 @@
             });
 
         }
+
     }
     function calculateAndDisplayRoute(map, stops) {
 
@@ -143,6 +143,11 @@
             })
             .catch((e) => window.alert("Directions request failed due to " + status));
     }
+
+    function socketRequest() {
+        socket.emit("Client Message", "ack");
+    }
+
 </script>
 
 </html>

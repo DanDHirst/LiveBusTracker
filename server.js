@@ -23,7 +23,6 @@ let busSchema = new mongoose.Schema({
 });
 // Define a Model.
 let BusModel = mongoose.model("bus", busSchema);
-let port = 9000;
 
 
 app.set("views", path.join(__dirname, "views"));
@@ -34,12 +33,18 @@ app.use(express.urlencoded({ extended: true }));
 //Whenever someone connects this gets executed
 io.on('connection', function (socket) {
   console.log('A user connected');
-
   // Send a message to the client.
-  socket.emit("server message", "Hello World");
+  
   //Whenever someone disconnects this piece of code executed
   socket.on('Client Message', function (msg) {
-    console.log("Recd from client: " + msg);
+    BusModel.find({}, (err, found) => {
+      if (!err) {
+        console.log("sent buses")
+        socket.emit("server message", found);
+      }
+    })
+  
+    
   });
 });
 
