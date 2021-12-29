@@ -1,0 +1,15 @@
+<head>
+    <title>Bus sim</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <%- include('../template/layout/header') %>
+</head>
+<body>
+    <form action="/editbus" method="POST">
+        <input value="<%= buses[busIDNo].busLocation.nextStop %>" name="nextStop" id="nextStop">
+        <input value="<%= buses[busIDNo].busLocation.lat %>" name="Lat" id="Lat">
+        <input value="<%= buses[busIDNo].busLocation.lng %>" name="Lng" id="Lng">
+        <input value="<%= buses[busIDNo].id %>" name="busID" id="busID">
+        <input value="<%= buses[busIDNo].busNo %>" name="busNo" id="busNo">
+        <button>Submit</button>
+    </form>
+</body>

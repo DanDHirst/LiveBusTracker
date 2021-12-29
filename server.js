@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 io.on('connection', function (socket) {
   console.log('A user connected');
   // Send a message to the client.
-  
+
   //Whenever someone disconnects this piece of code executed
   socket.on('Client Message', function (msg) {
     BusModel.find({}, (err, found) => {
@@ -43,8 +43,8 @@ io.on('connection', function (socket) {
         socket.emit("server message", found);
       }
     })
-  
-    
+
+
   });
 });
 
@@ -232,6 +232,52 @@ app.post('/updateroutes', function (req, res) {
   res.redirect("/updateroutes/" + busNum);
 });
 
+
+app.get('/EditBus/*', function (req, res, next) {
+  var url = req.params[0];
+  BusModel.find({}, (err, found) => {
+    if (!err) {
+      let buses = found;
+      res.render('EditBus', { buses, busIDNo: url });
+    }
+    else {
+      console.log(found);
+      console.log(err);
+      res.send("Some error occured!")
+    }
+  })
+});
+app.post('/EditBus', function (req, res, next) {
+  const busID = req.body.busID;
+  const busLocationStop = req.body.nextStop;
+  const busLocationLat = req.body.Lat;
+  const busLocationLng = req.body.Lng;
+  const busNumber = req.body.busNo;
+  BusModel.findOne({ _id: busID }, function (err, busDoc) {
+    console.log(err);
+    if (err) {
+      console.log(err);
+    }
+    if (!busDoc) {
+      console.log("no doc");
+      console.log(busDoc);
+    }
+    else {
+      busDoc.busLocation.lat = busLocationLat;
+      busDoc.busLocation.lng = busLocationLng;
+      busDoc.busLocation.nextStop = busLocationStop;
+      busDoc.busNo = busNumber;
+
+      busDoc.save(function (err) {
+        if (err) {
+          console.log(err);
+        }
+        console.log("saved");
+      });
+    }
+    res.redirect("/BusManagement");
+  })
+});
 
 http.listen(9000, function () {
   console.log("Listening on 9000")
