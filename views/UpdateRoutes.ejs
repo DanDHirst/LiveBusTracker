@@ -31,10 +31,12 @@
                 <input hidden value="<%=[busNo]%>" name="busNum">
                 <input hidden name="delete" value="true">
                 <input hidden name="routeID" value="<%= buses[busNo].route[i].id %>">
-                <button value="<%= buses[busNo].id %>" name="busID">
+                <button class="btn btn-danger" value="<%= buses[busNo].id %>" name="busID">
                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                 </button>
             </form>
+
+            <button onclick="window.location.href='/EditRoute?busIDNo=<%= busNo %>&routeIDNo=<%= i %>'" type="button" class="btn btn-primary">Edit route</button>
         </td>
 
     </tr>

@@ -279,6 +279,53 @@ app.post('/EditBus', function (req, res, next) {
   })
 });
 
+app.get('/EditRoute', function (req, res, next) {
+  let url = req.query.busIDNo;  // true
+  let routeIDNo = req.query.routeIDNo;
+  BusModel.find({}, (err, found) => {
+    if (!err) {
+      let buses = found;
+      res.render('EditRoute', { buses, busIDNo: url, routeIDNo });
+    }
+    else {
+      console.log(found);
+      console.log(err);
+      res.send("Some error occured!")
+    }
+  })
+});
+app.post('/EditRoute', function (req, res, next) {
+  const busID = req.body.busID;
+  const busIDNo = req.body.busIDNo;
+  const routeID = req.body.routeID;
+  const routeLat = req.body.lat;
+  const routeLng = req.body.lng;
+  const routeLocName = req.body.locName;
+  BusModel.findOne({ _id: busID }, function (err, busDoc) {
+    console.log(err);
+    if (err) {
+      console.log(err);
+    }
+    if (!busDoc) {
+      console.log("no doc");
+      console.log(busDoc);
+    }
+    else {
+      busDoc.route[routeID].lat = routeLat;
+      busDoc.route[routeID].lng = routeLng;
+      busDoc.route[routeID].locName = routeLocName;
+
+      busDoc.save(function (err) {
+        if (err) {
+          console.log(err);
+        }
+        console.log("saved");
+      });
+    }
+    res.redirect("/updateroutes/"+busIDNo);
+  })
+});
+
 http.listen(9000, function () {
   console.log("Listening on 9000")
 });
