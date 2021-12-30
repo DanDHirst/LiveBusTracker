@@ -135,7 +135,6 @@
             </div>
             <div class="modal-body">
                 <p>Your Bus Stop Is Next!</p>
-                <p>Some other text...</p>
             </div>
         </div>
 
@@ -195,9 +194,7 @@
             console.log("emitted message");
             buses = JSON.stringify(msg);
             let bus = JSON.parse(buses);
-
             var location = $("#locations option:selected").text();
-            alert(bus[0].busLocation.nextStop);
             if (bus[0].busLocation.nextStop == location) {
                 play();
                 modal.style.display = "block";
