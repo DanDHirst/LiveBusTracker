@@ -11,7 +11,8 @@
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <form action="/busSim" method="POST">
         <input value="<%= buses[0].id %>" name="busID" >
-        <input value="<%= buses[0].busLocation.nextStop %>" name="nextStop" id="nextStop">
+        Current stop: <input value="" name="CurrentStop" id="CurrentStop">
+        Next Stop: <input value="<%= buses[0].busLocation.nextStop %>" name="nextStop" id="nextStop">
         <input value="<%= buses[0].busLocation.lat %>" name="Lat" id="Lat">
         <input value="<%= buses[0].busLocation.lng %>" name="Lng" id="Lng">
         <button>Submit</button>
@@ -30,25 +31,26 @@
         let stop;
         let lat;
         let lng;
+        let current = name;
 
         switch (name) {
             case "Pilgrims Mews":
-                stop = "Pilgrims Mews";
+                stop = "Railway Station";
                 lat = "50.378278";
                 lng = "-4.148529";
                 break;
             case "Railway Station":
-                stop = "Railway Station";
+                stop = "Western Approach Flats";
                 lat = "50.376983";
                 lng = "-4.144634";
                 break;
             case "Western Approach Flats":
-                stop = "Western Approach Flats";
+                stop = "Western Approach (Stop 2)";
                 lat = "50.373153";
                 lng = "-4.146372";
                 break;
             case "Western Approach (Stop 2)":
-                stop = "Western Approach (Stop 2)";
+                stop = "Royal Parade (Stop A11)";
                 lat = "50.371069";
                 lng = "-4.148383";
                 break;
@@ -65,5 +67,6 @@
         $("#nextStop").val(stop);
         $("#Lat").val(lat);
         $("#Lng").val(lng);
+        $("#CurrentStop").val(current);
     }
 </script>

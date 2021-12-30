@@ -24,23 +24,169 @@
             padding: 0;
             text-align: center;
         }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: auto;
+            padding: 0;
+            border: 1px solid #888;
+            width: 80%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+
+            to {
+                top: 0;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+
+            to {
+                top: 0;
+                opacity: 1
+            }
+        }
+
+        /* The Close Button */
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .modal-body {
+            padding: 2px 16px;
+        }
+
+        .modal-footer {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
     </style>
 </head>
 
 <body>
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Your Bus Stop Is Next!</p>
+                <p>Some other text...</p>
+            </div>
+        </div>
+
+    </div>
 
     <div id="map"></div>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFZ2FjgtItESFsLMsvmEDSCVJm_KfXOqE&callback=initMap&v=weekly"
-        async></script>
+        async>
+        </script>
 
-    <button onclick="initMap()">reload</button>
-    <button onclick="socketRequest()"> sockets</button>
+    <button onclick="socketRequest()"> Refresh Map</button>
+    <label for="Locations">Choose a location:</label>
+
+    <select name="locations" id="locations">
+        <% for(var i=0; i < buses[0].route.length; i++) { %>
+        <option value="<%= buses[0].route[i].locName %>"><%= buses[0].route[i].locName %></option>
+
+        <% } %>
+
+    </select>
 
 </body>
 <script>
+
+
+    function play() {
+        var audio = new Audio(
+            'https://cdn.videvo.net/videvo_files/audio/premium/audio0086/watermarked/el_interface_button_30_hpx_preview.mp3');
+        audio.play();
+    }
+
+    var modal = document.getElementById("myModal");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
     let socket = io("http://localhost:9000");
     $(function () {
         setInterval(socketRequest, 30000);
@@ -48,6 +194,15 @@
             console.log("rec" + msg);
             console.log("emitted message");
             buses = JSON.stringify(msg);
+            let bus = JSON.parse(buses);
+
+            var location = $("#locations option:selected").text();
+            alert(bus[0].busLocation.nextStop);
+            if (bus[0].busLocation.nextStop == location) {
+                play();
+                modal.style.display = "block";
+            }
+
             initMap();
         });
     })
@@ -105,43 +260,28 @@
 
         for (let i = 1; i < checkboxArray.length - 1; i++) {
             waypts.push({
-                location: new google.maps.LatLng(parseFloat(checkboxArray[i].lat), parseFloat(checkboxArray[i].lng)),
-                stopover: true,
+                location: new
+                    google.maps.LatLng(parseFloat(checkboxArray[i].lat), parseFloat(checkboxArray[i].lng)), stopover: true,
             });
-        }
+        } originLatLng = new google.maps.LatLng(parseFloat(stops[0].lat), parseFloat(stops[0].lng)); destLatLng = new
+            google.maps.LatLng(parseFloat(stops[checkboxArray.length - 1].lat), parseFloat(stops[checkboxArray.length -
+                1].lng)); directionsService.route({
+                    origin: originLatLng, destination: destLatLng, waypoints: waypts,
+                    optimizeWaypoints: true, travelMode: google.maps.TravelMode.DRIVING,
+                }).then((response) => {
+                    directionsRenderer.setDirections(response);
 
-        originLatLng = new google.maps.LatLng(parseFloat(stops[0].lat), parseFloat(stops[0].lng));
-        destLatLng = new google.maps.LatLng(parseFloat(stops[checkboxArray.length - 1].lat), parseFloat(stops[checkboxArray.length - 1].lng));
-        directionsService
-            .route({
-                origin: originLatLng,
-                destination: destLatLng,
-                waypoints: waypts,
-                optimizeWaypoints: true,
-                travelMode: google.maps.TravelMode.DRIVING,
+                    const route = response.routes[0];
+            //const summaryPanel = document.getElementById("directions-panel");
 
+            //summaryPanel.innerHTML = "";
 
-            })
-            .then((response) => {
-                directionsRenderer.setDirections(response);
-
-                const route = response.routes[0];
-                //const summaryPanel = document.getElementById("directions-panel");
-
-                //summaryPanel.innerHTML = "";
-
-                /*/ For each route, display summary information.
-                for (let i = 0; i < route.legs.length; i++) {
-                    const routeSegment = i + 1;
- 
-                    summaryPanel.innerHTML +=
-                        "<b>Route Segment: " + routeSegment + "</b><br>";
-                    summaryPanel.innerHTML += route.legs[i].start_address + " to ";
-                    summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
-                    summaryPanel.innerHTML += route.legs[i].distance.text + "<br><br>";
-                } */
-            })
-            .catch((e) => window.alert("Directions request failed due to " + status));
+            /*/ For each route, display summary information.
+            for (let i = 0; i < route.legs.length; i++) { const routeSegment=i + 1; summaryPanel.innerHTML
+                +="<b>Route Segment: " + routeSegment + "</b><br>" ; summaryPanel.innerHTML
+                +=route.legs[i].start_address + " to " ; summaryPanel.innerHTML +=route.legs[i].end_address + "<br>" ;
+                summaryPanel.innerHTML +=route.legs[i].distance.text + "<br><br>" ; } */ }).catch((e) =>
+                        window.alert("Directions request failed due to " + status));
     }
 
     function socketRequest() {
