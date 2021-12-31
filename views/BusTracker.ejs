@@ -186,7 +186,7 @@
         }
     }
 
-    let socket = io("http://localhost:9000");
+    let socket = io("/");
     $(function () {
         setInterval(socketRequest, 30000);
         socket.on("server message", function (msg) {
