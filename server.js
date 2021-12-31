@@ -326,6 +326,6 @@ app.post('/EditRoute', function (req, res, next) {
   })
 });
 
-http.listen(9000, function () {
+http.listen(process.env.PORT || 9000, function () {
   console.log("Listening on 9000")
 });
