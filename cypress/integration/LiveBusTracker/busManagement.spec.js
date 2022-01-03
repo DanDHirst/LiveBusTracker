@@ -15,6 +15,8 @@ describe('example to-do app', () => {
         cy.get('#Lng').clear().type("-4.148529")
         cy.get('#busID').clear().type("1000")
         cy.get('body > :nth-child(6) > button').click()
+        cy.get('table').find('#nextStop').last().should('have.text','Pilgrims Mews')
+
     })
     it('remove bus on the page', () => {
         // We use the `cy.get()` command to get all elements that match the selector.
