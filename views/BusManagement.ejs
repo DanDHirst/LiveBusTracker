@@ -22,11 +22,11 @@
 
         <% for(var i=0; i < buses.length; i++) { %>
         <tr>
-            <td><%= buses[i].id %></td>
-            <td><%= buses[i].busNo %></td>
-            <td><%= buses[i].busLocation.nextStop %></td>
-            <td><%= buses[i].busLocation.lat %></td>
-            <td><%= buses[i].busLocation.lng %></td>
+            <td id="busID"><%= buses[i].id %></td>
+            <td id="busNo"><%= buses[i].busNo %></td>
+            <td id="nextStop"><%= buses[i].busLocation.nextStop %></td>
+            <td id="lat"><%= buses[i].busLocation.lat %></td>
+            <td id="lng"><%= buses[i].busLocation.lng %></td>
             <td>
                 <form action="/BusManagement" method="POST">
                     <button class="btn btn-danger" id="Delete"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
