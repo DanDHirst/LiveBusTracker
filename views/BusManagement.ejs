@@ -29,12 +29,12 @@
             <td><%= buses[i].busLocation.lng %></td>
             <td>
                 <form action="/BusManagement" method="POST">
-                    <button class="btn btn-danger" ><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    <button class="btn btn-danger" id="Delete"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                     <input hidden name="delete" value="true">
                     <input hidden value="<%= buses[i].id %>" name="busID"> 
                 </form>
-                <button onclick="window.location.href='/updateroutes/<%=i%>'" type="button" class="btn btn-primary">Manage Routes</button>
-                <button onclick="window.location.href='/editbus/<%=i%>'" type="button" class="btn btn-primary">Edit Bus</button>
+                <button onclick="window.location.href='/updateroutes/<%=i%>'" id="manageRoute" type="button" class="btn btn-primary">Manage Routes</button>
+                <button onclick="window.location.href='/editbus/<%=i%>'" type="button" id="editBus" class="btn btn-primary">Edit Bus</button>
                 
             </td>
 
