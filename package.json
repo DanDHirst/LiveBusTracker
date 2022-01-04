@@ -4,8 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --exit",
-    "start": "node server.js"
+    "test": "mocha --exit & cypress run --record --key b199002d-c906-48c2-92df-5edbf8e6fa1d",
+    "start": "node server.js",
+    "unit":"mocha --exit",
+    "cypress":"cypress run --record --key b199002d-c906-48c2-92df-5edbf8e6fa1d"
   },
   "author": "",
   "license": "ISC",
