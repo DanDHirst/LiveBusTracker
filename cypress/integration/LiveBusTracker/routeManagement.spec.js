@@ -15,8 +15,9 @@ describe('Bus Management', () => {
         cy.get('#nextStop').clear().type("Pilgrims Mews")
         cy.get('#Lat').clear().type("50.378278")
         cy.get('#Lng').clear().type("-4.148529")
-        cy.get('#busID').clear().type("1000")
-        cy.get('button').click()
+        cy.get('#submitRoute').click()
+        cy.reload()
+        
 
 
     })

@@ -23,20 +23,20 @@
 
     <% for(var i=0; i < buses[busNo].route.length; i++) { %>
     <tr>
-        <td><%= buses[busNo].route[i].locName %></td>
-        <td><%= buses[busNo].route[i].lat %></td>
-        <td><%= buses[busNo].route[i].lng %></td>
+        <td id="locName"><%= buses[busNo].route[i].locName %></td>
+        <td id="lat"><%= buses[busNo].route[i].lat %></td>
+        <td id="lng"><%= buses[busNo].route[i].lng %></td>
         <td>
             <form action="/UpdateRoutes" method="POST">
                 <input hidden value="<%=[busNo]%>" name="busNum">
                 <input hidden name="delete" value="true">
                 <input hidden name="routeID" value="<%= buses[busNo].route[i].id %>">
-                <button class="btn btn-danger" value="<%= buses[busNo].id %>" name="busID">
+                <button class="btn btn-danger" id="delete" value="<%= buses[busNo].id %>" name="busID">
                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                 </button>
             </form>
 
-            <button onclick="window.location.href='/EditRoute?busIDNo=<%= busNo %>&routeIDNo=<%= i %>'" id="submitRoute" type="button" class="btn btn-primary">Edit route</button>
+            <button onclick="window.location.href='/EditRoute?busIDNo=<%= busNo %>&routeIDNo=<%= i %>'" id="editRoute" type="button" class="btn btn-primary">Edit route</button>
         </td>
 
     </tr>
