@@ -12,7 +12,12 @@ describe('Bus Management', () => {
         // We use the `cy.get()` command to get all elements that match the selector.
         // Then, we use `should` to assert that there are two matched items,
         // which are the two default items.
-        
+        cy.get('#nextStop').clear().type("Pilgrims Mews")
+        cy.get('#Lat').clear().type("50.378278")
+        cy.get('#Lng').clear().type("-4.148529")
+        cy.get('#busID').clear().type("1000")
+        cy.get('button').click()
+
 
     })
 })
