@@ -5,12 +5,12 @@
 </head>
 <body>
     <form action="/editRoute" method="POST">
-        <input value="<%= buses[busIDNo].id %>" name="busID" id="busID">
-        <input value="<%=[busIDNo]%>" name="busIDNo" id="busIDNo">
-        <input value="<%=routeIDNo %>" name="routeID" id="routeID">
-        <input value="<%= buses[busIDNo].route[routeIDNo].locName %>" name="locName" id="locName" >
-        <input value="<%= buses[busIDNo].route[routeIDNo].lat %>" name="lat" id="lat">
-        <input value="<%= buses[busIDNo].route[routeIDNo].lng %>" name="lng" id="lng">
+        <input hidden value="<%= buses[busIDNo].id %>" name="busID" id="busID">
+        <input hidden value="<%=[busIDNo]%>" name="busIDNo" id="busIDNo">
+        <input hidden value="<%=routeIDNo %>" name="routeID" id="routeID">
+        location: <input value="<%= buses[busIDNo].route[routeIDNo].locName %>" name="locName" id="locName" >
+        latitude: <input value="<%= buses[busIDNo].route[routeIDNo].lat %>" name="lat" id="lat">
+        longitude: <input value="<%= buses[busIDNo].route[routeIDNo].lng %>" name="lng" id="lng">
         <button id="submitRoute">Submit</button>
     </form>
 </body>
