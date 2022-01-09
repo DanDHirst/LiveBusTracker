@@ -6,8 +6,8 @@
   "scripts": {
     "test": "mocha --exit & cypress run --record --key b199002d-c906-48c2-92df-5edbf8e6fa1d",
     "start": "node server.js",
-    "unit":"mocha --exit",
-    "cypress":"cypress run --record --key b199002d-c906-48c2-92df-5edbf8e6fa1d"
+    "unit": "mocha --exit",
+    "cypress": "cypress run --record --key b199002d-c906-48c2-92df-5edbf8e6fa1d"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +19,8 @@
     "mongodb": "^4.2.2",
     "mongoose": "^6.1.0",
     "path": "^0.12.7",
+    "sanitize": "^2.1.0",
+    "sanitizer": "^0.1.3",
     "socket.io": "^4.4.0"
   },
   "devDependencies": {

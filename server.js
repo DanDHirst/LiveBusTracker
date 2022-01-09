@@ -4,6 +4,7 @@ let path = require("path");
 let mongoose = require("mongoose");
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var sanitizer = require('sanitizer');
 
 // Connect to MongoDB.
 let url = "mongodb+srv://dan:test123@cluster0.llc3m.mongodb.net/database?retryWrites=true&w=majority"
@@ -76,10 +77,10 @@ app.get('/busSim', function (req, res, next) {
 });
 
 app.post('/busSim', function (req, res) {
-  const busID = req.body.busID;
-  const busLocationNextStop = req.body.nextStop;
-  const busLocationLat = req.body.Lat;
-  const busLocationLng = req.body.Lng;
+  const busID = sanitizer.sanitize(req.body.busID);
+  const busLocationNextStop = sanitizer.sanitize(req.body.nextStop);
+  const busLocationLat = sanitizer.sanitize(req.body.Lat);
+  const busLocationLng = sanitizer.sanitize(req.body.Lng);
 
   BusModel.findOne({ _id: busID }, function (err, busDoc) {
     console.log(err);
@@ -147,10 +148,10 @@ app.post('/BusManagement', function (req, res) {
   }
   else {
     var ObjectId = require('mongodb').ObjectId;
-    const busID = req.body.busID;
-    const busLocationNextStop = req.body.nextStop;
-    const busLocationLat = req.body.Lat;
-    const busLocationLng = req.body.Lng;
+    const busID = sanitizer.sanitize(req.body.busID);
+    const busLocationNextStop = sanitizer.sanitize(req.body.nextStop);
+    const busLocationLat = sanitizer.sanitize(req.body.Lat);
+    const busLocationLng = sanitizer.sanitize(req.body.Lng);
 
 
     let bus = {
@@ -187,8 +188,8 @@ app.get('/updateroutes/*', function (req, res, next) {
 app.post('/updateroutes', function (req, res) {
   const busNum = req.body.busNum;
   if (req.body.delete == "true") {
-    const busID = req.body.busID;
-    const routeID = req.body.routeID;
+    const busID = sanitizer.sanitize(req.body.busID);
+    const routeID = sanitizer.sanitize(req.body.routeID);
     BusModel.update({ _id: busID }, { "$pull": { "route": { "_id": routeID } } }, { safe: true, multi: true }, function (err, obj) {
       if (err) console.log(err);
       console.log("Successful deletion");
@@ -196,10 +197,10 @@ app.post('/updateroutes', function (req, res) {
   }
 
   else {
-    const busID = req.body.busID;
-    const busLocation = req.body.nextStop;
-    const routeLocationLat = req.body.Lat;
-    const routeLocationLng = req.body.Lng;
+    const busID = sanitizer.sanitize(req.body.busID);
+    const busLocation = sanitizer.sanitize(req.body.nextStop);
+    const routeLocationLat = sanitizer.sanitize(req.body.Lat);
+    const routeLocationLng = sanitizer.sanitize(req.body.Lng);
 
 
     let route = {
@@ -248,11 +249,11 @@ app.get('/EditBus/*', function (req, res, next) {
   })
 });
 app.post('/EditBus', function (req, res, next) {
-  const busID = req.body.busID;
-  const busLocationStop = req.body.nextStop;
-  const busLocationLat = req.body.Lat;
-  const busLocationLng = req.body.Lng;
-  const busNumber = req.body.busNo;
+  const busID = sanitizer.sanitize(req.body.busID);
+  const busLocationStop = sanitizer.sanitize(req.body.nextStop);
+  const busLocationLat = sanitizer.sanitize(req.body.Lat);
+  const busLocationLng = sanitizer.sanitize(req.body.Lng);
+  const busNumber = sanitizer.sanitize(req.body.busNo);
   BusModel.findOne({ _id: busID }, function (err, busDoc) {
     console.log(err);
     if (err) {
@@ -295,12 +296,12 @@ app.get('/EditRoute', function (req, res, next) {
   })
 });
 app.post('/EditRoute', function (req, res, next) {
-  const busID = req.body.busID;
-  const busIDNo = req.body.busIDNo;
-  const routeID = req.body.routeID;
-  const routeLat = req.body.lat;
-  const routeLng = req.body.lng;
-  const routeLocName = req.body.locName;
+  const busID = sanitizer.sanitize(req.body.busID);
+  const busIDNo = sanitizer.sanitize(req.body.busIDNo);
+  const routeID = sanitizer.sanitize(req.body.routeID);
+  const routeLat = sanitizer.sanitize(req.body.lat);
+  const routeLng = sanitizer.sanitize(req.body.lng);
+  const routeLocName = sanitizer.sanitize(req.body.locName);
   BusModel.findOne({ _id: busID }, function (err, busDoc) {
     console.log(err);
     if (err) {
