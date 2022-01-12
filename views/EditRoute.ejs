@@ -8,9 +8,9 @@
         <input hidden value="<%= buses[busIDNo].id %>" name="busID" id="busID">
         <input hidden value="<%=[busIDNo]%>" name="busIDNo" id="busIDNo">
         <input hidden value="<%=routeIDNo %>" name="routeID" id="routeID">
-        location: <input value="<%= buses[busIDNo].route[routeIDNo].locName %>" name="locName" id="locName" >
-        latitude: <input value="<%= buses[busIDNo].route[routeIDNo].lat %>" name="lat" id="lat">
-        longitude: <input value="<%= buses[busIDNo].route[routeIDNo].lng %>" name="lng" id="lng">
+        location: <input value="<%= buses[busIDNo].route[routeIDNo].locName %>" name="locName" id="locName" type="text" required>
+        latitude: <input value="<%= buses[busIDNo].route[routeIDNo].lat %>" name="lat" id="lat" type="text" required>
+        longitude: <input value="<%= buses[busIDNo].route[routeIDNo].lng %>" name="lng" id="lng" type="text" required>
         <button id="submitRoute">Submit</button>
     </form>
 </body>

@@ -6,10 +6,10 @@
 
 <body>
     <form action="/BusManagement" method="POST">
-        <input value="Western Approach Flats" name="nextStop" id="nextStop">
-        <input value=50.373153 name="Lat" id="Lat">
-        <input value=-4.146372 name="Lng" id="Lng">
-        <input value=2 name="busID" id="busID">
+        <input value="Western Approach Flats" name="nextStop" id="nextStop" type="text" required>
+        <input value=50.373153 name="Lat" id="Lat" type="text" required>
+        <input value=-4.146372 name="Lng" id="Lng" type="text" required>
+        <input value=2 name="busID" id="busID" type="number"required>
         <button>Submit</button>
     </form>
     <table class="table table-dark">

@@ -5,10 +5,10 @@
 </head>
 <body>
     <form action="/UpdateRoutes" method="POST">
-        <input value="Western Approach Flats" name="nextStop" id="nextStop">
-        <input value=50.373153 name="Lat" id="Lat">
-        <input value=-4.146372 name="Lng" id="Lng">
-        <input hidden value="<%= buses[busNo].id %>"" name="busID" id="busID">
+        <input value="Western Approach Flats" name="nextStop" id="nextStop" type="text" required>
+        <input value=50.373153 name="Lat" id="Lat" type="text" required>
+        <input value=-4.146372 name="Lng" id="Lng" type="text" required>
+        <input hidden value="<%= buses[busNo].id %>"" name="busID" id="busID" >
         <input hidden value="<%=[busNo]%>" name="busNum">
         <button id="submitRoute">Submit</button>
     </form>

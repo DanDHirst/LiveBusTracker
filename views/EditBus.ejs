@@ -5,11 +5,11 @@
 </head>
 <body>
     <form action="/editbus" method="POST">
-        <input value="<%= buses[busIDNo].busLocation.nextStop %>" name="nextStop" id="nextStop">
-        <input value="<%= buses[busIDNo].busLocation.lat %>" name="Lat" id="Lat">
-        <input value="<%= buses[busIDNo].busLocation.lng %>" name="Lng" id="Lng">
-        <input value="<%= buses[busIDNo].id %>" name="busID" id="busID">
-        <input value="<%= buses[busIDNo].busNo %>" name="busNo" id="busNo">
+        <input value="<%= buses[busIDNo].busLocation.nextStop %>" name="nextStop" id="nextStop" type="text" required>
+        <input value="<%= buses[busIDNo].busLocation.lat %>" name="Lat" id="Lat" type="text" required>
+        <input value="<%= buses[busIDNo].busLocation.lng %>" name="Lng" id="Lng" type="text" required>
+        <input value="<%= buses[busIDNo].id %>" name="busID" id="busID" type="text" required>
+        <input value="<%= buses[busIDNo].busNo %>" name="busNo" id="busNo" type="number" required>
         <button>Submit</button>
     </form>
 </body>
