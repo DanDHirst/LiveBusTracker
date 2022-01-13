@@ -194,6 +194,7 @@ app.post('/updateroutes', function (req, res) {
       if (err) console.log(err);
       console.log("Successful deletion");
     });
+
   }
 
   else {
@@ -229,6 +230,7 @@ app.post('/updateroutes', function (req, res) {
       }
 
     })
+    
   }
   res.redirect("/updateroutes/" + busNum);
 });
@@ -323,7 +325,7 @@ app.post('/EditRoute', function (req, res, next) {
         console.log("saved");
       });
     }
-    res.redirect("/updateroutes/"+busIDNo);
+    res.redirect("/updateroutes/" + busIDNo);
   })
 });
 
