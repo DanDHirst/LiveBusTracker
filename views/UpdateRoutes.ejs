@@ -5,12 +5,25 @@
 </head>
 <body>
     <form action="/UpdateRoutes" method="POST">
-        <input value="Western Approach Flats" name="nextStop" id="nextStop" type="text" required>
-        <input value=50.373153 name="Lat" id="Lat" type="text" required>
-        <input value=-4.146372 name="Lng" id="Lng" type="text" required>
+        <div class="form-group">
+            <label for="nextStop" class="control-label">Location</label>
+            <input class="form-control" value="Western Approach Flats" name="nextStop" id="nextStop" type="text" required>
+        </div>
+        <div class="form-group">
+            <label for="Lat" class="control-label">Latitude</label>
+            <input class="form-control" value=50.373153 name="Lat" id="Lat" type="text" required>
+        </div>
+        <div class="form-group">
+            <label for="nextStop" class="control-label">Longitiude</label>
+            <input class="form-control" value=-4.146372 name="Lng" id="Lng" type="text" required>
+        </div>
+
+        
+        
+        
         <input hidden value="<%= buses[busNo].id %>"" name="busID" id="busID" >
         <input hidden value="<%=[busNo]%>" name="busNum">
-        <button id="submitRoute">Submit</button>
+        <button class="btn btn-primary" id="submitRoute">Submit</button>
     </form>
 
 
