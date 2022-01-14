@@ -126,6 +126,7 @@
 </head>
 
 <body>
+    <h1>Live Bus Tracker</h1>
     <div id="myModal" class="modal">
 
         <!-- Modal content -->
@@ -149,7 +150,7 @@
         </script>
 
     <button class="btn btn-success" onclick="socketRequest()"> Refresh Map</button>
-    <label for="Locations">Choose a location:</label>
+    <label for="locations">Choose a location:</label>
 
     <select name="locations" id="locations">
         <% for(var i=0; i < buses[0].route.length; i++) { %>
